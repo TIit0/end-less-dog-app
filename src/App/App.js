@@ -1,15 +1,22 @@
 
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import SlideShow from '../Components/SlideShow/SlideShow';
 
 function App() {
 
   const [dogImgUrlArr, setDogImgUrlArr] = useState("");
   const [dogBreeds, setDogBreeds] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(-1);
+  
+  const [currentBreed, setCurrentBreed] = useState("Choose a dog breed")
+  
+console.log(currentIndex)
+
 
   useEffect(() => {
     async function getDogBreeds() {
-
+      console.log("making request")
       try {
         const dogBreedsRequest = await fetch("https://dog.ceo/api/breeds/list/all");
 
@@ -21,8 +28,8 @@ function App() {
 
     }
     getDogBreeds();
-  }, [])
 
+  }, []);
 
 
   async function handleChange(e) {
@@ -30,7 +37,7 @@ function App() {
     const dogBreed = e.target.value;
     if (dogBreed === "Choose a dog breed") return
 
-    const imgRequest = await fetch(`https://dog.ceo/api/breed/${dogBreed}/images/random/1`);
+    const imgRequest = await fetch(`https://dog.ceo/api/breed/${dogBreed}/images`);
     console.log(imgRequest);
 
     const imgData = await imgRequest.json();
@@ -38,7 +45,12 @@ function App() {
     console.log(imgData)
     setDogImgUrlArr(imgData.message)
     console.log(imgData.message)
-  }
+    setCurrentIndex(0);
+    setCurrentBreed(dogBreed)
+}
+
+
+
 
   return (
     <div className="App">
@@ -55,19 +67,11 @@ function App() {
           </select>
         </form>
       </header>
-      <div className='slideshow'>
-        {
-          dogImgUrlArr ?
-
-            <div
-            className='slide'
-            key={dogImgUrlArr[0]}
-            src={dogImgUrlArr[0]}
-            style={{backgroundImage: `url(${dogImgUrlArr[0]})`}}></div>
-            :
-            null
-        }
-      </div>
+      <SlideShow
+      dogImgUrlArr={dogImgUrlArr}
+      currentBreed={currentBreed}
+      setCurrentIndex={setCurrentIndex}
+      currentIndex={currentIndex} />
     </div>
   );
 }
@@ -122,4 +126,42 @@ async function handleChange(e) {
 
 export default App;
 
+*/
+
+
+
+/*
+
+  const [dogImgUrlArr, setDogImgUrlArr] = useState("");
+  const [dogBreeds, setDogBreeds] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(-2);
+  console.log(currentIndex)
+
+  const slideShowTimer = useCallback(() => 
+    setTimeout(() => {
+      setCurrentIndex(lastIndx => lastIndx + 2)
+    }, 3000)
+  , [currentIndex])
+
+  useEffect(() => {
+    async function getDogBreeds() {
+
+      try {
+        const dogBreedsRequest = await fetch("https://dog.ceo/api/breeds/list/all");
+
+        const breedsObj = await dogBreedsRequest.json()
+        setDogBreeds(Object.entries(breedsObj.message));
+      } catch (e) {
+        console.log(e.message)
+      }
+
+    }
+    getDogBreeds();
+
+  }, []);
+
+  useEffect(() => {
+    slideShowTimer();
+    return () => clearTimeout(slideShowTimer)
+  }, [currentIndex])
 */

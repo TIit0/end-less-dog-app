@@ -7,11 +7,12 @@ function App() {
 
   const [dogImgUrlArr, setDogImgUrlArr] = useState("");
   const [dogBreeds, setDogBreeds] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(-1);
-  
+  const [currentIndex, setCurrentIndex] = useState(null);
+
   const [currentBreed, setCurrentBreed] = useState("Choose a dog breed")
-  
-console.log(currentIndex)
+
+  console.log(currentIndex)
+
 
 
   useEffect(() => {
@@ -32,11 +33,20 @@ console.log(currentIndex)
   }, []);
 
 
-  async function handleChange(e) {
-    e.preventDefault();
-    const dogBreed = e.target.value;
-    if (dogBreed === "Choose a dog breed") return
+  async function handleChange(e, autoChange) {
+    let dogBreed;
 
+    if (e === null) {
+      dogBreed = autoChange;
+      console.log(autoChange)
+    } else {
+      e.preventDefault();
+      dogBreed = e.target.value;
+      if (dogBreed === "Choose a dog breed") {
+        setCurrentBreed(dogBreed);
+        return;
+      }
+    }
     const imgRequest = await fetch(`https://dog.ceo/api/breed/${dogBreed}/images`);
     console.log(imgRequest);
 
@@ -47,7 +57,7 @@ console.log(currentIndex)
     console.log(imgData.message)
     setCurrentIndex(0);
     setCurrentBreed(dogBreed)
-}
+  }
 
 
 
@@ -68,10 +78,12 @@ console.log(currentIndex)
         </form>
       </header>
       <SlideShow
-      dogImgUrlArr={dogImgUrlArr}
-      currentBreed={currentBreed}
-      setCurrentIndex={setCurrentIndex}
-      currentIndex={currentIndex} />
+        dogImgUrlArr={dogImgUrlArr}
+        currentBreed={currentBreed}
+        setCurrentIndex={setCurrentIndex}
+        currentIndex={currentIndex}
+        dogBreeds={dogBreeds}
+        handleChange={handleChange} />
     </div>
   );
 }

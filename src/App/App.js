@@ -12,6 +12,7 @@ function App() {
   const [currentBreed, setCurrentBreed] = useState("Choose a dog breed")
 
   console.log(currentIndex)
+  
 
 
 
@@ -41,6 +42,8 @@ function App() {
       const select = window.document.querySelector("#select");
       select.value = autoChange;
       console.log(autoChange)
+      console.log(dogBreeds.length);
+      
     } else {
       e.preventDefault();
       dogBreed = e.target.value;

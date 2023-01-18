@@ -13,7 +13,11 @@ export default function SlideShow({dogImgUrlArr, currentBreed, setCurrentIndex, 
                     handleChange(e, dogBreeds[i + 1][0]);
                     return;
                 }
-                
+                if (currentBreed === "wolfhound") {
+                    const e = null;
+                    handleChange(e, dogBreeds[0][0]);
+                    return;
+                }
             }
             return
         }

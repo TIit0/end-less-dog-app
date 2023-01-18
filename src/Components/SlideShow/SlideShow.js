@@ -6,7 +6,7 @@ export default function SlideShow({dogImgUrlArr, currentBreed, setCurrentIndex, 
 
     useEffect(() => {
         if (currentBreed === "Choose a dog breed") return
-        if ((dogImgUrlArr.length  - 1) === currentIndex) {
+        if ((dogImgUrlArr.length) === currentIndex) {
             for(let i = 0; i < dogBreeds.length; i++) {
                 if (currentBreed === dogBreeds[i][0] ) {
                     const e = null;

@@ -38,6 +38,8 @@ function App() {
 
     if (e === null) {
       dogBreed = autoChange;
+      const select = window.document.querySelector("#select");
+      select.value = autoChange;
       console.log(autoChange)
     } else {
       e.preventDefault();
@@ -67,7 +69,7 @@ function App() {
       <header>
         <h1>Endless Dog App</h1>
         <form >
-          <select name="dogBreed" onChange={handleChange}>
+          <select id="select" name="dogBreed" onChange={handleChange}>
             <option>Choose a dog breed</option>
             {
               dogBreeds.map(dog => (

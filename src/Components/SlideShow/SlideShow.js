@@ -3,17 +3,21 @@ import { useEffect } from "react";
 
 export default function SlideShow({dogImgUrlArr, currentBreed, setCurrentIndex, currentIndex, dogBreeds, handleChange}) {
     
+/* handle the slide show timer */
 
     useEffect(() => {
         if (currentBreed === "Choose a dog breed") return;
 
+/* check if we reached last image of breed and set new breed accordingly  */
         if ((dogImgUrlArr.length) === currentIndex) {
             for(let i = 0; i < dogBreeds.length; i++) {
+                
                 if (currentBreed === dogBreeds[i][0] ) {
                     const e = null;
                     handleChange(e, dogBreeds[i + 1][0]);
                     return;
                 }
+
                 if (currentBreed === dogBreeds[dogBreeds.length - 1][0]) {
                     const e = null;
                     handleChange(e, dogBreeds[0][0]);
@@ -27,7 +31,7 @@ export default function SlideShow({dogImgUrlArr, currentBreed, setCurrentIndex, 
             setCurrentIndex(lastIndx => lastIndx + 1)
         }, 4000);
 
-
+        /* clean up function - prevent memory leak */
         return () => clearInterval(interval)
     }, [currentIndex]);
 

@@ -1,31 +1,31 @@
 
 import './App.css';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import SlideShow from '../Components/SlideShow/SlideShow';
+import ErrorMessage from '../Components/ErrorMessage/ErrorMessage';
 
 function App() {
 
   const [dogImgUrlArr, setDogImgUrlArr] = useState("");
   const [dogBreeds, setDogBreeds] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(null);
+  const [error, setError] = useState("Failed getting Dog breed images");
+  const [currentBreed, setCurrentBreed] = useState("Choose a dog breed");
 
-  const [currentBreed, setCurrentBreed] = useState("Choose a dog breed")
-
-  console.log(currentIndex)
   
 
 
-
+/* load the list of dog breeds when app renders */
   useEffect(() => {
     async function getDogBreeds() {
-      console.log("making request")
+      setError("");
       try {
         const dogBreedsRequest = await fetch("https://dog.ceo/api/breeds/list/all");
 
         const breedsObj = await dogBreedsRequest.json()
         setDogBreeds(Object.entries(breedsObj.message));
       } catch (e) {
-        console.log(e.message)
+        setError(`We could not get the puppies because: ${e.message} :c`)
       }
 
     }
@@ -33,18 +33,20 @@ function App() {
 
   }, []);
 
-
+  /* fetch selected dog breed */
   async function handleChange(e, autoChange) {
     let dogBreed;
+    setError("");
 
-    if (e === null) {
+    
+    if (e === null) { 
+      /* handle if array of images ended automatically change to next dog */
       dogBreed = autoChange;
       const select = window.document.querySelector("#select");
       select.value = autoChange;
-      console.log(autoChange)
-      console.log(dogBreeds.length);
       
     } else {
+      /* handle change selected by user */
       e.preventDefault();
       dogBreed = e.target.value;
       if (dogBreed === "Choose a dog breed") {
@@ -52,16 +54,19 @@ function App() {
         return;
       }
     }
-    const imgRequest = await fetch(`https://dog.ceo/api/breed/${dogBreed}/images`);
-    console.log(imgRequest);
 
-    const imgData = await imgRequest.json();
+    try { /* fetch images and set as an arr of breed imgs */
+      const imgRequest = await fetch(`https://dog.ceo/api/breed/${dogBreed}/images`);
+    
+      const imgData = await imgRequest.json();
 
-    console.log(imgData)
     setDogImgUrlArr(imgData.message)
-    console.log(imgData.message)
     setCurrentIndex(0);
-    setCurrentBreed(dogBreed)
+    setCurrentBreed(dogBreed);
+    
+    } catch(e) {
+      setError(`We could not get the dog images because: ${e.message} :c`)
+    }
   }
 
 
@@ -69,6 +74,9 @@ function App() {
 
   return (
     <div className="App">
+      {
+      error ? 
+      <ErrorMessage>{error}</ErrorMessage> : 
       <header>
         <h1>Endless Dog App</h1>
         <form >
@@ -82,18 +90,37 @@ function App() {
           </select>
         </form>
       </header>
-      <SlideShow
+      }
+      {
+        error ? 
+        null : 
+        <SlideShow
         dogImgUrlArr={dogImgUrlArr}
         currentBreed={currentBreed}
         setCurrentIndex={setCurrentIndex}
         currentIndex={currentIndex}
         dogBreeds={dogBreeds}
         handleChange={handleChange} />
+      }
     </div>
   );
 }
 
 export default App;
+
+
+
+
+
+/* 
+code boneyard! 
+
+
+I like leaving the dead code here sometimes it can be useful to use certain pices.
+*/
+
+
+
 
 
 

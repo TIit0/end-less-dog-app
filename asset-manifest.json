@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/end-less-dog-app/static/css/main.1e7b910f.css",
+    "main.js": "/end-less-dog-app/static/js/main.c41fe22a.js",
+    "static/js/787.b71bc62c.chunk.js": "/end-less-dog-app/static/js/787.b71bc62c.chunk.js",
+    "index.html": "/end-less-dog-app/index.html",
+    "main.1e7b910f.css.map": "/end-less-dog-app/static/css/main.1e7b910f.css.map",
+    "main.c41fe22a.js.map": "/end-less-dog-app/static/js/main.c41fe22a.js.map",
+    "787.b71bc62c.chunk.js.map": "/end-less-dog-app/static/js/787.b71bc62c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1e7b910f.css",
+    "static/js/main.c41fe22a.js"
+  ]
+}
